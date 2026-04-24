@@ -3,7 +3,7 @@ import { RootState } from "../store/store";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8400/api/v1/",
+    baseUrl: "https://api.courries.com/api/v1/",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
