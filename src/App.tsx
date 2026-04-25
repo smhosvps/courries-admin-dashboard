@@ -10,7 +10,7 @@ import AdminRoute from "./redux/features/auth/AdminRoutes";
 import { setCredentials } from "./redux/features/auth/authSlice"; 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useGetUserQuery } from "./redux/api/apiSlice";
+import { useGetUserQuery } from "./redux/api/apiSlice"; 
 import { Loader } from "lucide-react";
 import UserProfilePage from "./screens/UserProfilePage";
 import NotificationPage from "./NotificationPage";
