@@ -451,7 +451,7 @@ export default function AdminLayout({ children }: LayoutProps) {
             <img
               src={logo}
               alt="Courries Admin"
-              className="rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-lg shadow-blue-200/50"
+              className="rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-2xl"
             />
           </Link>
 

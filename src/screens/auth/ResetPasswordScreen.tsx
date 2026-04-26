@@ -143,21 +143,21 @@ export default function ResetPasswordScreen() {
                   <img
                     src={logo}
                     alt="MUD Logo"
-                    className=" rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-lg shadow-blue-200/50"
+                    className=" rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-2xl"
                   />
                 </Link>
                 {/* <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-400 rounded-full animate-ping" />
                   <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full" /> */}
               </div>
               <div className="text-center">
-                <h1 className="text-2xl sm:text-3xl mb-5 font-bold bg-gradient-to-r from-blue-700 to-blue-800 bg-clip-text text-transparent">
+                <h1 className="text-2xl mb-5 font-bold bg-gradient-to-r from-blue-700 to-blue-800 bg-clip-text text-transparent">
                   Password Recovery
                 </h1>
               </div>
             </div>
 
             <div className="space-y-3">
-              <p className="text-base sm:text-lg text-foreground/70 max-w-lg mx-auto">
+              <p className="text-base text-foreground/70 max-w-lg mx-auto">
                 Enter the OTP sent to your email and create a new secure
                 password
               </p>
@@ -323,8 +323,8 @@ export default function ResetPasswordScreen() {
                     }}
                     placeholder="Re-enter your password"
                     className={`w-full pl-12 pr-12 py-3 rounded-xl border ${errors.confirmPassword
-                        ? "border-red-300"
-                        : "border-gray-200"
+                      ? "border-red-300"
+                      : "border-gray-200"
                       } bg-white/80 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-3 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200`}
                   />
                   <button
@@ -357,7 +357,7 @@ export default function ResetPasswordScreen() {
                 type="submit"
                 size="lg"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-base font-semibold rounded-xl shadow-lg shadow-blue-200/50 hover:shadow-blue-300/50 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full bg-[#1969fe] text-white text-base font-semibold rounded-full shadow-lg shadow-blue-200/50 hover:shadow-blue-300/50 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">

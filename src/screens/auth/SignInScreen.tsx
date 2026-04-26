@@ -159,21 +159,21 @@ export default function SignInScreen() {
                   <img
                     src={logo}
                     alt="MUD Logo"
-                    className=" rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-lg shadow-blue-200/50"
+                    className=" rounded-2xl flex items-center justify-center text-white font-bold text-xl sm:text-2xl"
                   />
                 </Link>
                 {/* <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-400 rounded-full animate-ping" />
                             <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full" /> */}
               </div>
               <div className="text-center">
-                <h1 className="text-2xl sm:text-3xl mb-5 font-bold bg-gradient-to-r from-[#1969fe] to-blue-700 bg-clip-text text-transparent">
+                <h1 className="text-2xl sm:text-2xl mb-5 font-bold bg-gradient-to-r from-[#1969fe] to-blue-700 bg-clip-text text-transparent">
                   Admin Database
                 </h1>
               </div>
             </div>
 
             <div className="space-y-3">
-              <p className="text-base sm:text-lg text-foreground/70 max-w-lg mx-auto">
+              <p className="text-base text-foreground/70 max-w-lg mx-auto">
                 Sign in to access the database
               </p>
             </div>
@@ -283,7 +283,7 @@ export default function SignInScreen() {
                 type="submit"
                 size="lg"
                 disabled={isLoading || lockout}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-base font-semibold rounded-full shadow-lg shadow-blue-200/50 hover:shadow-blue-300/50 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full bg-[#1969fe] text-white text-base font-semibold rounded-full shadow-lg shadow-blue-200/50 hover:shadow-blue-300/50 transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">

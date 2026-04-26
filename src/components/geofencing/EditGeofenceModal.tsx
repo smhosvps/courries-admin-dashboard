@@ -76,7 +76,7 @@ const EditGeofenceModal: React.FC<EditGeofenceModalProps> = ({ geofence, onClose
       }).unwrap();
 
       toast.success('Geofence updated successfully');
-          window.location.reload();
+      window.location.reload();
       onClose();
     } catch (err) {
       toast.error('Failed to update geofence');
