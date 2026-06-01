@@ -28,16 +28,17 @@ import {
   UserPlus,
   Wallet,
   CreditCard,
-  BoxIcon,
   CalendarX2,
   DollarSign,
   CircleDollarSign,
-  CreditCardIcon,
   Loader,
 } from "lucide-react";
-import { useGetDashboardStatsQuery } from "./redux/features/dashboardApi/dashboardApi";
+import {
+  useGetDashboardStatsQuery,
+  useGetDashboardStatsV2Query,
+  useGetDashboardDataQuery,
+} from "@/redux/features/dashboardApi/dashboardApi";
 import { Link } from "react-router-dom";
-
 
 const getStatusColor = (status: string) => {
   if (status === "Done" || status === "Approved" || status === "Completed")
@@ -50,9 +51,24 @@ const getStatusColor = (status: string) => {
 };
 
 export default function AdminDashboard() {
-  const { data, isLoading } = useGetDashboardStatsQuery();
+  // Fetch from all three identical endpoints
+  const { data: data1, isLoading: loading1 } = useGetDashboardStatsQuery();
+  const { data: data2, isLoading: loading2 } = useGetDashboardStatsV2Query();
+  const { data: data3, isLoading: loading3 } = useGetDashboardDataQuery();
 
-  if (isLoading) {
+
+
+  // Optional: check consistency (only in development)
+  if (!loading1 && !loading2 && !loading3 && data1 && data2 && data3) {
+    const d1 = JSON.stringify(data1.data);
+    const d2 = JSON.stringify(data2.data);
+    const d3 = JSON.stringify(data3.data);
+    if (d1 !== d2 || d1 !== d3) {
+      console.warn("Dashboard data from the three endpoints differs!");
+    }
+  }
+
+  if (loading1) {
     return (
       <div className="min-h-screen flex flex-col">
         <div className="flex-1 flex items-center justify-center">
@@ -62,9 +78,8 @@ export default function AdminDashboard() {
     );
   }
 
-
-
-  const stats = data?.data;
+  // Use data from the first endpoint (they are identical)
+  const stats = data1?.data;
 
   // Extract data sections (fallback to empty objects/arrays)
   const todayStats = stats?.todayOrderStats || {
@@ -113,7 +128,7 @@ export default function AdminDashboard() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[
-              { label: "Total Order", value: todayStats.totalOrder, icon: BoxIcon, color: "text-blue-600" },
+              { label: "Total Order", value: todayStats.totalOrder, icon: Package, color: "text-blue-600" },
               { label: "Pending Order", value: todayStats.pendingOrder, icon: Clock, color: "text-blue-600" },
               { label: "In-Progress Order", value: todayStats.inProgressOrder, icon: Truck, color: "text-blue-600" },
               { label: "Completed Order", value: todayStats.completedOrder, icon: CheckCircle, color: "text-blue-600" },
@@ -156,7 +171,7 @@ export default function AdminDashboard() {
             ].map((stat, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-[6px] p-3 sm:p-4 shadow-sm border border-gray-100  transition-shadow"
+                className="bg-white rounded-[6px] p-3 sm:p-4 shadow-sm border border-gray-100 transition-shadow"
               >
                 <div className="flex items-start justify-between">
                   <div>
@@ -181,7 +196,7 @@ export default function AdminDashboard() {
               { label: "Total Admin Commission", value: financialStats.adminCommission, icon: DollarSign, color: "text-blue-600", prefix: "₦" },
               { label: "Total Delivery Boy Commission", value: financialStats.deliveryCommission, icon: CircleDollarSign, color: "text-blue-600", prefix: "₦" },
               { label: "Total Wallet Balance", value: financialStats.totalWalletBalance, icon: Wallet, color: "text-blue-600", prefix: "₦" },
-              { label: "Monthly Payment Count", value: financialStats.monthlyPaymentCount, icon: CreditCardIcon, color: "text-blue-600", prefix: "₦" },
+              { label: "Monthly Payment Count", value: financialStats.monthlyPaymentCount, icon: CreditCard, color: "text-blue-600", prefix: "₦" },
             ].map((stat, idx) => (
               <div
                 key={idx}
@@ -211,7 +226,7 @@ export default function AdminDashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-3 sm:px-4 font-semibold text-gray-700">Id</th>
+                  <th className="text-left py-3 px-3 sm:px-4 font-semibold text-gray-700">Tracking Id</th>
                   <th className="text-left py-3 px-3 sm:px-4 font-semibold text-gray-700">Name</th>
                   <th className="text-left py-3 px-3 sm:px-4 font-semibold text-gray-700">Delivery Man</th>
                   <th className="text-left py-3 px-3 sm:px-4 font-semibold text-gray-700">Pickup Date</th>
@@ -221,9 +236,9 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {recentOrders.map((order) => (
+                {recentOrders.map((order: any) => (
                   <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-3 sm:px-4 text-gray-900">{order.id}</td>
+                    <td className="py-3 px-3 sm:px-4 text-gray-900">{order.trackingId}</td>
                     <td className="py-3 px-3 sm:px-4 text-gray-900">{order.name}</td>
                     <td className="py-3 px-3 sm:px-4 text-gray-900">{order.deliveryMan}</td>
                     <td className="py-3 px-3 sm:px-4 text-gray-600 whitespace-nowrap">{order.pickupDate}</td>
@@ -234,12 +249,14 @@ export default function AdminDashboard() {
                       </span>
                     </td>
                     <td className="py-3 px-3 sm:px-4">
-                      <a href="#" className="text-blue-600 font-medium hover:underline">View</a>
+                      <Link to={`/dashboard-super-admin/order-details/${order.id}`} className="text-blue-600 font-medium hover:underline">View</Link>
                     </td>
                   </tr>
                 ))}
                 {recentOrders.length === 0 && (
-                  <tr><td colSpan={7} className="text-center py-4 text-gray-500">No recent orders</td></tr>
+                  <tr>
+                    <td colSpan={7} className="text-center py-4 text-gray-500">No recent orders</td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -264,7 +281,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {recentWithdrawals.map((item) => (
+                {recentWithdrawals.map((item: any) => (
                   <tr key={item.no} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-3 px-3 sm:px-4 text-gray-900">{item.no}</td>
                     <td className="py-3 px-3 sm:px-4 text-gray-900">{item.name}</td>
@@ -278,7 +295,9 @@ export default function AdminDashboard() {
                   </tr>
                 ))}
                 {recentWithdrawals.length === 0 && (
-                  <tr><td colSpan={5} className="text-center py-4 text-gray-500">No withdrawal requests</td></tr>
+                  <tr>
+                    <td colSpan={5} className="text-center py-4 text-gray-500">No withdrawal requests</td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -302,7 +321,7 @@ export default function AdminDashboard() {
                   outerRadius={100}
                   dataKey="value"
                 >
-                  {withdrawalDistribution.map((entry, index) => (
+                  {withdrawalDistribution.map((entry: any, index: number) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
                 </Pie>
@@ -310,7 +329,7 @@ export default function AdminDashboard() {
               </PieChart>
             </ResponsiveContainer>
             <div className="mt-6 space-y-2">
-              {withdrawalDistribution.map((item, idx) => (
+              {withdrawalDistribution.map((item: any, idx: number) => (
                 <div key={idx} className="flex items-center gap-2 text-sm">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.fill }}></div>
                   <span className="text-gray-700">{item.name} ({item.value.toLocaleString()})</span>
@@ -336,7 +355,7 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {packagesTableData.map((item, idx) => (
+                  {packagesTableData.map((item: any, idx: number) => (
                     <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="py-3 px-3 sm:px-4 text-gray-900">{item.city}</td>
                       <td className="py-3 px-3 sm:px-4 text-gray-900 font-medium">{item.total}</td>
@@ -346,7 +365,9 @@ export default function AdminDashboard() {
                     </tr>
                   ))}
                   {packagesTableData.length === 0 && (
-                    <tr><td colSpan={5} className="text-center py-4 text-gray-500">No activity data</td></tr>
+                    <tr>
+                      <td colSpan={5} className="text-center py-4 text-gray-500">No activity data</td>
+                    </tr>
                   )}
                 </tbody>
               </table>
@@ -377,15 +398,6 @@ export default function AdminDashboard() {
                 <Bar dataKey="amount" fill="#1969fe" radius={[8, 8, 0, 0]} name="Monthly Payment" />
               </BarChart>
             </ResponsiveContainer>
-            {/* <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={monthlyPaymentData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(value) => `₦${value.toLocaleString()}`} />
-                <Bar dataKey="amount" fill="#4F46E5" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer> */}
           </section>
 
           {/* Weekly Order Chart */}
@@ -403,7 +415,7 @@ export default function AdminDashboard() {
                   outerRadius={100}
                   dataKey="value"
                 >
-                  {weeklyOrderData.map((entry, index) => (
+                  {weeklyOrderData.map((entry: any, index: number) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
                 </Pie>
@@ -411,7 +423,7 @@ export default function AdminDashboard() {
               </PieChart>
             </ResponsiveContainer>
             <div className="mt-6 flex flex-wrap gap-4 text-xs">
-              {weeklyOrderData.map((item, idx) => (
+              {weeklyOrderData.map((item: any, idx: number) => (
                 <div key={idx} className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.fill }}></div>
                   <span className="text-gray-700">{item.name}</span>

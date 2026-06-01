@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { Button } from '@/components/ui/button';
 import { useDeleteUserAdminMutation, useGetAllUsersQuery } from '@/redux/features/user/userApi';
+import { PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
   FaSearch,
@@ -14,6 +16,7 @@ import {
   FaTimesCircle,
   FaTimes
 } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function AdminDrivers() {
@@ -78,15 +81,28 @@ export default function AdminDrivers() {
   return (
     <div className=" min-h-screen">
       {/* Header */}
-      <div className='bg-white rounded-xl py-6 px-0 lg:px-4'>
-        <div className="mb-8">
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 gap-3">
-            Admin Drivers Management
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Manage delivery partners with admin access privileges
-          </p>
+      <div className='bg-white rounded-xl py-6 px-4'>
+        <div className="flex gap-3 w-full items-center justify-between mb-4 flex-col-reverse md:flex-row-reverse ">
+          <div className="flex justify-end items-end">
+            <Link
+              to="/dashboard-super-admin/add-admin-account"
+            >
+              <Button className="w-[300px] md:w-full bg-[#1969fe] hover:bg-blue-600 rounded-full text-white">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Account
+              </Button>
+            </Link>
+          </div>
+          <div className="mb-8">
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 gap-3">
+              Admin Drivers Management
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Manage delivery partners with admin access privileges
+            </p>
+          </div>
         </div>
+
 
         {/* Stats Card */}
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
@@ -213,8 +229,8 @@ export default function AdminDrivers() {
                       </td>
                       <td className="px-6 py-4 border border-gray-200">
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${user.status === 'active'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-orange-100 text-orange-800'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-orange-100 text-orange-800'
                           }`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${user.status === 'active' ? 'bg-emerald-500' : 'bg-orange-500'
                             }`}></span>
@@ -266,8 +282,8 @@ export default function AdminDrivers() {
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                     className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${currentPage === 1
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                       }`}
                   >
                     <FaChevronLeft className="text-xs" />
@@ -292,8 +308,8 @@ export default function AdminDrivers() {
                           key={i}
                           onClick={() => setCurrentPage(pageNum)}
                           className={`w-9 h-9 rounded-lg text-sm font-medium transition-all duration-200 ${currentPage === pageNum
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                             }`}
                         >
                           {pageNum}
@@ -306,8 +322,8 @@ export default function AdminDrivers() {
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                     className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${currentPage === totalPages
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                       }`}
                   >
                     Next

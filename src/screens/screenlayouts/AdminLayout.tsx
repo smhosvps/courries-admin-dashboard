@@ -23,6 +23,7 @@ import {
   Building2,
   Box,
   BookPlusIcon,
+  MonitorCheck,
 } from "lucide-react";
 import { Link, useLocation, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -258,7 +259,7 @@ const mainSections: MainSection[] = [
             label: "All Requests",
             section: "access-control",
             link: "/dashboard-super-admin/manage-withdraw",
-          },
+          }
         ],
       },
       {
@@ -269,6 +270,17 @@ const mainSections: MainSection[] = [
             label: "Coupon List",
             section: "audit-log",
             link: "/dashboard-super-admin/coupon-list",
+          },
+        ],
+      },
+      {
+        menuTitle: "Earning Formula",
+        icon: MonitorCheck,
+        submenu: [
+           {
+            label: "Earning Formular",
+            section: "earning-formula",
+            link: "/dashboard-super-admin/earning-formula",
           },
         ],
       },
@@ -447,7 +459,7 @@ export default function AdminLayout({ children }: LayoutProps) {
           } md:translate-x-0 md:static z-30 flex flex-col`}
       >
         <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
-          <Link to="http://localhost:3000/dashboard-super-admin">
+          <Link to="/dashboard-super-admin">
             <img
               src={logo}
               alt="Courries Admin"

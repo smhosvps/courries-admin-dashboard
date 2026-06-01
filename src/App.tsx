@@ -7,10 +7,10 @@ import SignInScreen from "./screens/auth/SignInScreen";
 import ForgotPasswordScreen from "./screens/auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "./screens/auth/ResetPasswordScreen";
 import AdminRoute from "./redux/features/auth/AdminRoutes";
-import { setCredentials } from "./redux/features/auth/authSlice"; 
+import { setCredentials } from "./redux/features/auth/authSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useGetUserQuery } from "./redux/api/apiSlice"; 
+import { useGetUserQuery } from "./redux/api/apiSlice";
 import { Loader } from "lucide-react";
 import UserProfilePage from "./screens/UserProfilePage";
 import NotificationPage from "./NotificationPage";
@@ -53,6 +53,7 @@ import { AssignedOrders } from "./screens/admin/deliveryStatusOrder/AssignedOrde
 import { AdminEarnings } from "./screens/admin/earnings/AdminEarnings";
 import { DeliveryEarnings } from "./screens/admin/earnings/DeliveryEarnings";
 import OrderReport from "./screens/admin/earnings/OrderReport";
+import EarningFormulaSettings from "./screens/admin/accounts/EarningFormulaSettings";
 
 
 function App() {
@@ -81,7 +82,7 @@ function App() {
       <BrowserRouter>
         {/* <Header /> */}
         <Routes>
-          <Route path="*" element={<NotFoundScreen />} />
+
           <Route element={<IsNotLoginAuth />}>
             <Route path="/" element={<SignInScreen />} />
             <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
@@ -129,6 +130,7 @@ function App() {
                 element={<ManageUserPayment />}
               />
               <Route path="my-riders" element={<AdminDrivers />} />
+              <Route path="earning-formula" element={<EarningFormulaSettings />} />
               <Route path="manage-package" element={<ManagePackage />} />
               <Route path="manage-faq" element={<FaqManagement />} />
               <Route path="country" element={<ManageCountry />} />
@@ -144,6 +146,7 @@ function App() {
               <Route path="manage-report" element={<ReportManagement />} />
             </Route>
           </Route>
+          <Route path="*" element={<NotFoundScreen />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer

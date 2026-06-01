@@ -294,7 +294,7 @@ const DeliveryOptionsAdmin: React.FC = () => {
                   ₦{option.perKm}
                 </TableCell>
                 <TableCell className="border-r border-gray-200 px-4 py-3">
-                  ₦{option.speed} km/h
+                  {option.speed} km/h
                 </TableCell>
                 <TableCell className="px-4 py-3 text-right">
                   <div className="flex justify-end gap-2">

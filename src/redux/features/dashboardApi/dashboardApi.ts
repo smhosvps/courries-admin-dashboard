@@ -30,6 +30,7 @@ export interface DashboardData {
   };
   recentOrders: Array<{
     id: string;
+    trackingId: string;
     name: string;
     deliveryMan: string;
     pickupDate: string;
@@ -58,16 +59,26 @@ export interface DashboardData {
   }>;
 }
 
-
 export const dashboardBoardApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    // Original endpoint
     getDashboardStats: builder.query<{ success: boolean; data: DashboardData }, void>({
       query: () => 'get-admin-stats',
     }),
+    // Second endpoint – same logic, different URL
+    getDashboardStatsV2: builder.query<{ success: boolean; data: DashboardData }, void>({
+      query: () => 'get-dashboard-stats',
+    }),
+    // Third endpoint – same logic, different URL
+    getDashboardData: builder.query<{ success: boolean; data: DashboardData }, void>({
+      query: () => 'get-dashboard-data',
+    }),
   }),
-})
+});
 
+// Export all three hooks
 export const {
-  useGetDashboardStatsQuery
-} = dashboardBoardApi
-
+  useGetDashboardStatsQuery,
+  useGetDashboardStatsV2Query,
+  useGetDashboardDataQuery,
+} = dashboardBoardApi;

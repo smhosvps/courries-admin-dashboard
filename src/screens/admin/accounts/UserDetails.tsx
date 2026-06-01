@@ -243,8 +243,8 @@ export default function UserDetails() {
           <p className="text-muted-foreground">
             The user account you're looking for doesn't exist or may have been removed.
           </p>
-          <Button asChild className="mt-4 bg-blue-600 hover:bg-blue-700">
-            <Link to="/dashboard/accounts">Return to Dashboard</Link>
+          <Button asChild className="mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full">
+            <Link to="/dashboard-super-admin">Return to Dashboard</Link>
           </Button>
         </div>
       </div>
