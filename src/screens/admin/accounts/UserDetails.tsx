@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useGetUserByIdQuery } from "@/redux/features/user/userApi";
+import { useGetUserByIdQuery, useToggleOverallVerificationMutation } from "@/redux/features/user/userApi";
+// ✅ Replace with your actual mutation hook (example below)
+
 import {
   ArrowLeft,
   Home,
@@ -45,7 +47,6 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import UpgradeUserType from "@/components/UpgradeUserType";
-import { ToggleVerificationSwitch } from "@/components/ToggleVerificationSwitch";
 import { useGetUserQuery } from "@/redux/api/apiSlice";
 import {
   Dialog,
@@ -59,8 +60,8 @@ export default function UserDetails() {
   const { id } = useParams<{ id: string }>();
   const { data: fetch, isLoading, refetch } = useGetUserByIdQuery(id!, {
     skip: !id,
-    pollingInterval: 30000, // 30 seconds in milliseconds
-  });;
+    pollingInterval: 30000,
+  });
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("personal");
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -69,6 +70,9 @@ export default function UserDetails() {
   const reviewsPerPage = 5;
   const navigate = useNavigate();
 
+  // ✅ Real mutation hook (adjust import to your actual endpoint)
+  const [toggleOverallVerification, { isLoading: updatingVerification }] =
+    useToggleOverallVerificationMutation();
   const { data } = useGetUserQuery();
   const isSuperAdmin = data?.user?.userType === "super admin";
 
@@ -201,6 +205,21 @@ export default function UserDetails() {
         return "bg-orange-100 text-orange-800";
       default:
         return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  // ✅ Correct handler that calls the backend
+  const handleToggleVerification = async () => {
+    if (!user?._id || !deliveryInfo) return;
+    const newVerifiedStatus = !deliveryInfo.verificationStatus?.verified;
+    try {
+      await toggleOverallVerification({
+        userId: user._id,
+        verified: newVerifiedStatus,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      console.error("Failed to update verification status", error);
     }
   };
 
@@ -645,6 +664,7 @@ export default function UserDetails() {
                     </div>
                   </div>
 
+                  {/* ✅ Verification Status Card with working toggle */}
                   <div className="bg-slate-50 p-4 rounded-[12px] border border-blue-100">
                     <h3 className="font-semibold flex items-center gap-2 mb-3">
                       <BadgeCheck className="h-5 w-5" />
@@ -657,15 +677,29 @@ export default function UserDetails() {
                           <p className="text-xs text-muted-foreground">Manually mark as fully verified</p>
                         </div>
                         {isSuperAdmin ? (
-                          <ToggleVerificationSwitch
-                            userId={user._id}
-                            currentVerified={deliveryInfo?.verificationStatus?.verified || false}
-                            onToggleSuccess={() => refetch()}
-                          />
+                          <button
+                            onClick={handleToggleVerification}
+                            disabled={updatingVerification}
+                            className={`relative inline-flex h-6 w-11 rounded-full transition-colors ${deliveryInfo?.verificationStatus?.verified
+                                ? "bg-blue-600"
+                                : "bg-gray-300"
+                              }`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 mt-1 bg-white rounded-full transition-transform ${deliveryInfo?.verificationStatus?.verified
+                                  ? "translate-x-6"
+                                  : "translate-x-1"
+                                }`}
+                            />
+                          </button>
                         ) : (
                           <Badge
                             variant="outline"
-                            className={deliveryInfo?.verificationStatus?.verified ? "bg-green-100 text-green-800" : "bg-gray-50"}
+                            className={
+                              deliveryInfo?.verificationStatus?.verified
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-50"
+                            }
                           >
                             {deliveryInfo?.verificationStatus?.verified ? "Verified" : "Pending"}
                           </Badge>

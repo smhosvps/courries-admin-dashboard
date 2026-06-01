@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   ArrowLeft,
@@ -62,6 +62,7 @@ export default function OrderDetail() {
   });
 
   const delivery = response?.data;
+
 
   useEffect(() => {
     if (error) {
@@ -307,10 +308,11 @@ export default function OrderDetail() {
                 <span className="text-gray-500">Created</span>
                 <span>{format(new Date(delivery.createdAt), 'dd MMM yyyy')}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Delivery Partner</span>
-                <span>{delivery.deliveryPartner?.name || 'Not assigned'}</span>
-              </div>
+              <Link to={`/dashboard-super-admin/user-detail/${delivery.deliveryPartner?._id}`} className="flex justify-between items-center">
+                <div className="flex justify-between bg-blue-600 hover:bg-blue-700 text-white px-2 py-2 my-2 rounded">
+                  <span className="text-white">Delivery Partner Details</span>
+                </div>
+              </Link>
               <hr className="my-3" />
               <div className="flex justify-between">
                 <span>Distance</span>

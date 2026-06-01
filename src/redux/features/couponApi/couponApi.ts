@@ -4,6 +4,7 @@ import { City } from "../cityApi/cityApi";
 export interface Coupon {
   _id: string;
   startDate: string;
+  code: string;
   endDate: string;
   valueType: "fixed" | "percentage";
   discountAmount: number;
@@ -17,6 +18,7 @@ export interface Coupon {
 export interface CouponInput {
   startDate: string;
   endDate: string;
+  code: string;
   valueType: "fixed" | "percentage";
   discountAmount: number;
   cityType: "all" | "specific";

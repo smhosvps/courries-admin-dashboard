@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+import React, { useState, useEffect } from "react";
 import {
   Ticket,
   Edit2,
@@ -64,7 +65,7 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
     refetch();
   };
 
- if (isLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
         <div className="flex-1 flex items-center justify-center">
@@ -73,7 +74,6 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
       </div>
     );
   }
-
 
   const totalItems = coupons?.length || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -89,7 +89,7 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
         <h1 className="text-2xl font-bold">Coupons</h1>
         <button
           onClick={onAddClick}
-          className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center gap-2"
+          className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-blue-700 transition"
         >
           <Ticket size={18} /> Add Coupon
         </button>
@@ -104,6 +104,7 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
               <thead className="bg-gray-100">
                 <tr>
                   <th className="border px-2 py-2 text-left">S/N</th>
+                  <th className="border px-2 py-2 text-left">Coupon Code</th>
                   <th className="border px-2 py-2 text-left">Start Date</th>
                   <th className="border px-2 py-2 text-left">End Date</th>
                   <th className="border px-2 py-2 text-left">Value Type</th>
@@ -118,22 +119,17 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
                 {currentCoupons.map((coupon, idx) => (
                   <tr key={coupon._id} className="hover:bg-gray-50">
                     <td className="border px-2 py-2">{start + idx + 1}</td>
-                    <td className="border px-2 py-2">
-                      {formatDate(coupon.startDate)}
+                    <td className="border px-2 py-2 font-mono font-bold text-blue-600">
+                      {coupon.code}
                     </td>
-                    <td className="border px-2 py-2">
-                      {formatDate(coupon.endDate)}
-                    </td>
-                    <td className="border px-2 py-2 capitalize">
-                      {coupon.valueType}
-                    </td>
+                    <td className="border px-2 py-2">{formatDate(coupon.startDate)}</td>
+                    <td className="border px-2 py-2">{formatDate(coupon.endDate)}</td>
+                    <td className="border px-2 py-2 capitalize">{coupon.valueType}</td>
                     <td className="border px-2 py-2">
                       {coupon.discountAmount}
                       {coupon.valueType === "percentage" ? "%" : ""}
                     </td>
-                    <td className="border px-2 py-2 capitalize">
-                      {coupon.cityType}
-                    </td>
+                    <td className="border px-2 py-2 capitalize">{coupon.cityType}</td>
                     <td className="border px-2 py-2">
                       {coupon.cityType === "all"
                         ? "All Cities"
@@ -163,13 +159,13 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
                     <td className="border px-2 py-2">
                       <button
                         onClick={() => onEditClick(coupon)}
-                        className="text-blue-600 mr-2"
+                        className="text-blue-600 mr-2 hover:text-blue-800"
                       >
                         <Edit2 size={16} />
                       </button>
                       <button
                         onClick={() => handleDeleteClick(coupon)}
-                        className="text-red-600"
+                        className="text-red-600 hover:text-red-800"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -219,7 +215,7 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
               <button
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="p-1 border rounded-full"
+                className="p-1 border rounded-full disabled:opacity-50"
               >
                 <ChevronLeft size={16} />
               </button>
@@ -228,7 +224,7 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
                   setCurrentPage((p) => Math.min(totalPages, p + 1))
                 }
                 disabled={currentPage === totalPages}
-                className="p-1 border rounded-full"
+                className="p-1 border rounded-full disabled:opacity-50"
               >
                 <ChevronRight size={16} />
               </button>
@@ -255,8 +251,7 @@ const CouponList: React.FC<CouponListProps> = ({ onAddClick, onEditClick }) => {
               </button>
             </div>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this coupon? This action cannot be
-              undone.
+              Are you sure you want to delete coupon <span className="font-mono font-bold">{couponToDelete.code}</span>? This action cannot be undone.
             </p>
             <div className="flex justify-end gap-3">
               <button

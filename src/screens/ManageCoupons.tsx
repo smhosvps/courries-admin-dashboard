@@ -12,8 +12,8 @@ import { useState } from "react";
 export default function ManageCoupons() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
-  const [addCoupon] = useAddCouponMutation();
-  const [updateCoupon] = useUpdateCouponMutation();
+  const [addCoupon, { isLoading: isAdding }] = useAddCouponMutation();
+  const [updateCoupon, { isLoading: isUpdating }] = useUpdateCouponMutation();
   const { refetch } = useGetCouponsQuery();
 
   const handleAdd = () => {
@@ -43,6 +43,7 @@ export default function ManageCoupons() {
         onSubmit={handleSubmit}
         initialData={editingCoupon}
         isEditing={!!editingCoupon}
+        isLoading={isAdding || isUpdating}
       />
     </div>
   );
