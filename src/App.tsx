@@ -54,6 +54,7 @@ import { AdminEarnings } from "./screens/admin/earnings/AdminEarnings";
 import { DeliveryEarnings } from "./screens/admin/earnings/DeliveryEarnings";
 import OrderReport from "./screens/admin/earnings/OrderReport";
 import EarningFormulaSettings from "./screens/admin/accounts/EarningFormulaSettings";
+import AdminWalletManagement from "./screens/admin/wallet/AdminWalletManagement";
 
 
 function App() {
@@ -134,6 +135,7 @@ function App() {
               <Route path="manage-package" element={<ManagePackage />} />
               <Route path="manage-faq" element={<FaqManagement />} />
               <Route path="country" element={<ManageCountry />} />
+              <Route path="manage-wallet" element={<AdminWalletManagement />} />
               <Route path="city" element={<ManageCity />} />
               <Route path="coupon-list" element={<ManageCoupons />} />
               <Route path="manage-withdraw" element={<ManageUserWithdraws />} />

@@ -24,6 +24,7 @@ import {
   Box,
   BookPlusIcon,
   MonitorCheck,
+  WalletIcon,
 } from "lucide-react";
 import { Link, useLocation, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -260,6 +261,17 @@ const mainSections: MainSection[] = [
             section: "access-control",
             link: "/dashboard-super-admin/manage-withdraw",
           }
+        ], 
+      },
+      {
+        menuTitle: "Wallet",
+        icon: WalletIcon,
+        submenu: [
+          {
+            label: "Manage Wallet",
+            section: "manage-wallet",
+            link: "/dashboard-super-admin/manage-wallet",
+          },
         ],
       },
       {

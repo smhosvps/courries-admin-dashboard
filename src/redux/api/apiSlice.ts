@@ -5,7 +5,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.courries.com/api/v1/", 
     // baseUrl: "http://localhost:8400/api/v1/", 
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, { getState }) => { 
       const token = (getState() as RootState).auth.token;
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
